@@ -48,6 +48,7 @@ namespace RestBreakService
             if(strArgs.Arguments == "true")
             {
                 WindowsActions.LockWorkStation();
+                //WindowsActions.SetSuspendState(false, true, true);
             }
         }
     }

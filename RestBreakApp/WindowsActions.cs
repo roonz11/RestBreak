@@ -10,6 +10,9 @@ namespace RestBreakService
     public static class WindowsActions
     {
         [DllImport("user32.dll")]
-        public static extern bool LockWorkStation();        
+        public static extern bool LockWorkStation();
+
+        [DllImport("Powrprof.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+        public static extern bool SetSuspendState(bool hiberate, bool forceCritical, bool disableWakeEvent);
     }
 }
