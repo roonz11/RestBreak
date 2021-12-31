@@ -5,17 +5,9 @@ using Topshelf;
 namespace RestBreakApp
 {
     class Program
-    {        
-        const int DURATION = 20;
+    {               
         static void Main(string[] args)
-        {
-            int duration = DURATION;
-            if (args.Length > 0)
-            {
-                int.TryParse(args[0], out duration);
-                duration *= 60000;
-            }
-
+        {            
             var exitCode = HostFactory.Run(x =>
             {
                 x.Service<HeartBeat>(s =>

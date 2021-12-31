@@ -1,17 +1,11 @@
 ﻿using Microsoft.Toolkit.Uwp.Notifications;
-using System;
 using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
 
 namespace RestBreakService
 {
     public class Notification
-    {
-        private int id;
-        public Notification()
-        {            
-            id = 0;
-        }
+    {                
         public void ShowNotification()
         {
             ToastContent toastContent = new ToastContent()

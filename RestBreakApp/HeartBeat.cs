@@ -8,11 +8,12 @@ namespace RestBreakService
     {
         private readonly Timer _timer;
         private readonly Notification _notification;
+        private const int DURATION = 20 * 60000;
 
         public HeartBeat()
         {
             _notification = new Notification();
-            _timer = new Timer(3000) { AutoReset = true };
+            _timer = new Timer(DURATION) { AutoReset = true };
             _timer.Elapsed += TimerElapsed;
         }
 
