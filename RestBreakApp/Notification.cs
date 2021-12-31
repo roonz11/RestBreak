@@ -1,28 +1,68 @@
 ﻿using Microsoft.Toolkit.Uwp.Notifications;
 using System;
-using System.IO;
-using System.Reflection;
+using Windows.Data.Xml.Dom;
+using Windows.UI.Notifications;
 
 namespace RestBreakService
 {
     public class Notification
     {
-        private readonly string projectName;
-        private int Id;
+        private int id;
         public Notification()
-        {
-            projectName = Assembly.GetCallingAssembly().GetName().Name;
-            Id = 0;
+        {            
+            id = 0;
         }
         public void ShowNotification()
         {
-            new ToastContentBuilder()
-                .AddArgument("action", "showNotification")
-                .AddArgument("notificationId", Id)
-                .SetToastScenario(ToastScenario.Reminder)                
-                .AddText("Time to take a break")
-                .AddText("Take a break dammit!")                
-                .Show();
+            ToastContent toastContent = new ToastContent()
+            {
+                Launch = "body tapped",
+                Visual = new ToastVisual()
+                {
+                    BindingGeneric = new ToastBindingGeneric()
+                    {
+                        Children =
+                        {
+                            new AdaptiveText()
+                            {
+                                Text = "Take a break fool"
+                            }
+                        }
+                    }
+                },
+                Actions = new ToastActionsCustom()
+                {
+                    Buttons = { new ToastButton("Fine", "true") }
+
+                },                
+                
+            };
+
+            var doc = new XmlDocument();
+            doc.LoadXml(toastContent.GetContent());
+
+            var promptNotification = new ToastNotification(doc);
+            promptNotification.Activated += PromptNotificationOnActivated;
+
+            ToastNotificationManagerCompat.CreateToastNotifier().Show(promptNotification);
+
+                //.AddArgument("screenlock", true)
+                //.AddArgument("notificationId", id++)
+                //.SetToastScenario(ToastScenario.Reminder)                
+                //.AddText("Time to take a break")
+                //.AddText("Take a break dammit!")
+                //.SetBackgroundActivation()
+                //.Show();
+        }
+
+        private void PromptNotificationOnActivated(ToastNotification sender, object args)
+        {
+            ToastActivatedEventArgs strArgs = args as ToastActivatedEventArgs;
+
+            if(strArgs.Arguments == "true")
+            {
+                Console.WriteLine("yo yo yo");
+            }
         }
     }
 }
