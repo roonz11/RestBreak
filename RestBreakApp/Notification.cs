@@ -45,14 +45,6 @@ namespace RestBreakService
             promptNotification.Activated += PromptNotificationOnActivated;
 
             ToastNotificationManagerCompat.CreateToastNotifier().Show(promptNotification);
-
-                //.AddArgument("screenlock", true)
-                //.AddArgument("notificationId", id++)
-                //.SetToastScenario(ToastScenario.Reminder)                
-                //.AddText("Time to take a break")
-                //.AddText("Take a break dammit!")
-                //.SetBackgroundActivation()
-                //.Show();
         }
 
         private void PromptNotificationOnActivated(ToastNotification sender, object args)
@@ -61,7 +53,7 @@ namespace RestBreakService
 
             if(strArgs.Arguments == "true")
             {
-                Console.WriteLine("yo yo yo");
+                WindowsActions.LockWorkStation();
             }
         }
     }
