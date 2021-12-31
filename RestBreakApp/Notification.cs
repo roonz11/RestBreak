@@ -1,11 +1,12 @@
 ﻿using Microsoft.Toolkit.Uwp.Notifications;
+using RestBreakService.WindowsActions;
 using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
 
 namespace RestBreakService
 {
     public class Notification
-    {                
+    {
         public void ShowNotification()
         {
             ToastContent toastContent = new ToastContent()
@@ -26,10 +27,14 @@ namespace RestBreakService
                 },
                 Actions = new ToastActionsCustom()
                 {
-                    Buttons = { new ToastButton("Fine", "true") }
+                    Buttons = 
+                    { 
+                        new ToastButton("Fine", "true"),
+                        new ToastButton("Go Away", "false")
+                    }
 
-                },                
-                
+                },
+
             };
 
             var doc = new XmlDocument();
@@ -45,10 +50,12 @@ namespace RestBreakService
         {
             ToastActivatedEventArgs strArgs = args as ToastActivatedEventArgs;
 
-            if(strArgs.Arguments == "true")
+            if (strArgs.Arguments == "true")
             {
-                WindowsActions.LockWorkStation();
-                //WindowsActions.SetSuspendState(false, true, true);
+
+                DllComands.SendMessage(Monitor.HWND_BROADCAST, Monitor.WM_SYSCOMMAND, Monitor.SC_MONITORPOWER, (int)Monitor.MonitorState.OFF);
+                //DllComands.LockWorkStation();
+                //DllComands.SetSuspendState(false, true, true);
             }
         }
     }
