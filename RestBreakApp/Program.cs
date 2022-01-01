@@ -5,9 +5,9 @@ using Topshelf;
 namespace RestBreakApp
 {
     class Program
-    {               
+    {
         static void Main(string[] args)
-        {            
+        {
             var exitCode = HostFactory.Run(x =>
             {
                 x.Service<HeartBeat>(s =>
@@ -15,7 +15,16 @@ namespace RestBreakApp
                     s.ConstructUsing(heartbeat => new HeartBeat());
                     s.WhenStarted(heartbeat => heartbeat.Start());
                     s.WhenStopped(heartbeat => heartbeat.Stop());
+                    //s.WhenPowerEvent((heartbeat, host, arg) =>
+                    //{
+                    //    heartbeat.PowerEvent(host, arg);
+                    //    return true;
+                    //});
+                    //s.WhenPaused(heartbeat => heartbeat.Stop());
+                    //s.WhenContinued(hearbeat => hearbeat.Start());
                 });
+
+                x.EnablePauseAndContinue();               
 
                 x.RunAsLocalSystem();
 

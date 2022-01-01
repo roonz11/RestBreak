@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Timers;
+using Topshelf;
 
 namespace RestBreakService
 {
@@ -9,6 +10,7 @@ namespace RestBreakService
         private readonly Timer _timer;
         private readonly Notification _notification;
         private const int DURATION = 20 * 60000;
+        //private const int DURATION = 3000;
 
         public HeartBeat()
         {
@@ -30,6 +32,15 @@ namespace RestBreakService
         public void Stop()
         {
             _timer.Stop();
-        }
+        }        
+
+        //public void PowerEvent(HostControl host, PowerEventArguments arg)
+        //{
+        //    File.WriteAllLines(@"C:\Users\Aruna\Documents\deleteme\powerevents.txt", new string[] {
+        //                    host.ToString(),
+        //                    arg.EventCode.ToString(),
+        //                    _timer.Interval.ToString()
+        //                });
+        //}
     }
 }
