@@ -61,12 +61,12 @@ namespace RestTray {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static byte[] icon {
+        internal static System.Drawing.Icon Icon {
             get {
-                object obj = ResourceManager.GetObject("icon", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("Icon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
         

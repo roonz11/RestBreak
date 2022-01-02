@@ -9,8 +9,11 @@ namespace RestBreakService
     {
         private readonly Timer _timer;
         private readonly Notification _notification;
+#if DEBUG
+        private const int DURATION = 3000;
+#else
         private const int DURATION = 20 * 60000;
-        //private const int DURATION = 3000;
+#endif
 
         public HeartBeat()
         {

@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using RestBreakService;
+using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Windows;
@@ -12,6 +14,7 @@ namespace RestTray
     {
         private System.Windows.Forms.NotifyIcon _notifyIcon;
         private bool _isExit;
+        private HeartBeat _heartBeat = new HeartBeat();
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -20,17 +23,23 @@ namespace RestTray
             MainWindow.Closing += MainWindow_Closing;
 
             _notifyIcon = new System.Windows.Forms.NotifyIcon();
-            _notifyIcon.DoubleClick += (s, args) => ShowMainWindow();
-            _notifyIcon.Icon = RestTray.Resources.MyIcon;
+            //_notifyIcon.DoubleClick += (s, args) => ShowMainWindow();
+            _notifyIcon.Icon = RestTray.Resources.Icon;
             _notifyIcon.Visible = true;
 
             CreateContextMenu();
+            StartRestService();
+        }
+
+        private void StartRestService()
+        {            
+            _heartBeat.Start();
         }
 
         private void CreateContextMenu()
         {
             _notifyIcon.ContextMenuStrip = new System.Windows.Forms.ContextMenuStrip();
-            _notifyIcon.ContextMenuStrip.Items.Add("Rest Bro").Click += (s, e) => ShowMainWindow();
+            //_notifyIcon.ContextMenuStrip.Items.Add("Rest Bro").Click += (s, e) => ShowMainWindow();
             _notifyIcon.ContextMenuStrip.Items.Add("Exit").Click += (s, e) => ExitApplication();
             
         }
@@ -38,6 +47,7 @@ namespace RestTray
         private void ExitApplication()
         {
             _isExit = true;
+            _heartBeat.Stop();
             MainWindow.Close();
             _notifyIcon.Dispose();
             _notifyIcon = null;
