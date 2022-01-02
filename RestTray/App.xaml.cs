@@ -1,6 +1,4 @@
-﻿using RestBreakService;
-using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Windows;
@@ -23,15 +21,14 @@ namespace RestTray
             MainWindow.Closing += MainWindow_Closing;
 
             _notifyIcon = new System.Windows.Forms.NotifyIcon();
-            //_notifyIcon.DoubleClick += (s, args) => ShowMainWindow();
             _notifyIcon.Icon = RestTray.Resources.Icon;
             _notifyIcon.Visible = true;
 
             CreateContextMenu();
-            StartRestService();
+            StartHeartBeat();
         }
 
-        private void StartRestService()
+        private void StartHeartBeat()
         {            
             _heartBeat.Start();
         }
@@ -39,7 +36,6 @@ namespace RestTray
         private void CreateContextMenu()
         {
             _notifyIcon.ContextMenuStrip = new System.Windows.Forms.ContextMenuStrip();
-            //_notifyIcon.ContextMenuStrip.Items.Add("Rest Bro").Click += (s, e) => ShowMainWindow();
             _notifyIcon.ContextMenuStrip.Items.Add("Exit").Click += (s, e) => ExitApplication();
             
         }
@@ -51,30 +47,6 @@ namespace RestTray
             MainWindow.Close();
             _notifyIcon.Dispose();
             _notifyIcon = null;
-        }
-
-        public Icon ByteToIcon(byte[] bytes)
-        {
-            using(MemoryStream ms = new MemoryStream(bytes))
-            {
-                return new Icon(ms);
-            }
-        }
-
-        private void ShowMainWindow()
-        {
-            if (MainWindow.IsVisible)
-            {
-                if (MainWindow.WindowState == WindowState.Minimized)
-                {
-                    MainWindow.WindowState = WindowState.Normal;
-                }
-                MainWindow.Activate();
-            }
-            else
-            {
-                MainWindow.Show();
-            }
         }
 
         private void MainWindow_Closing(object sender, CancelEventArgs e)
