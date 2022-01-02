@@ -5,10 +5,15 @@
 		<TargetFramework>netcoreapp3.1</TargetFramework>
 		<UseWPF>true</UseWPF>
 		<UseWindowsForms>true</UseWindowsForms>
+		<ApplicationIcon>Resources\icon.ico</ApplicationIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
 	  <None Remove="Resources\MyIcon.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="Resources\icon.ico" />
 	</ItemGroup>
 
 	<ItemGroup>
