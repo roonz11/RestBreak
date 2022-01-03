@@ -21,14 +21,9 @@ namespace RestTray
             _timer.Stop();
         }
 
-        public decimal GetElapsedTime()
+        public TimeSpan GetElapsedTime()
         {
-            //return _timer.ElapsedMilliseconds;            
-#if DEBUG
-            return _timer.ElapsedMilliseconds / 1000;
-#else
-            return _timer.ElapsedMilliseconds / 60000;            
-#endif
+            return TimeSpan.FromMilliseconds(_timer.ElapsedMilliseconds);
         }
     }
 }

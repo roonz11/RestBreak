@@ -1,4 +1,5 @@
 ﻿using Microsoft.Toolkit.Uwp.Notifications;
+using System;
 using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
 
@@ -25,7 +26,7 @@ namespace RestTray
                         {
                             new AdaptiveText()
                             {
-                                Text = "Take a break fool"
+                                Text = "Take a break!"
                             }
                         }
                     }
@@ -61,7 +62,7 @@ namespace RestTray
             }
         }
 
-        public void ShowRestTimeNotification(decimal timeRested)
+        public void ShowRestTimeNotification(TimeSpan timeRested)
         {
             ToastContent toastContent = new ToastContent()
             {
@@ -74,7 +75,7 @@ namespace RestTray
                         {
                             new AdaptiveText()
                             {
-                                Text = $"You rested for {timeRested.ToString("0.##")} min"
+                                Text = $"You rested for: {timeRested.ToString(@"hh\:mm\:ss")}",                                
                             }
                         }
                     }

@@ -2,10 +2,8 @@
 
 namespace RestTray
 {
-    //public delegate bool ReturnElapsedEventHandler(object sender, ElapsedEventArgs args);
     public class HeartBeat
     {
-        //public event ReturnElapsedEventHandler ReturnElapsedEvent;
         private readonly Timer _timer;
         private readonly Notification _notification;
 #if DEBUG
