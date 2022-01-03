@@ -1,5 +1,4 @@
 ﻿using Microsoft.Toolkit.Uwp.Notifications;
-using RestTray.WindowsActions;
 using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
 
@@ -7,6 +6,12 @@ namespace RestTray
 {
     public class Notification
     {
+        private readonly RestAction _restAction;
+
+        public Notification(RestAction restAction)
+        {
+            _restAction = restAction;
+        }
         public void ShowNotification()
         {
             ToastContent toastContent = new ToastContent()
@@ -52,11 +57,37 @@ namespace RestTray
 
             if (strArgs.Arguments == "true")
             {
-
-                DllComands.SendMessage(Monitor.HWND_BROADCAST, Monitor.WM_SYSCOMMAND, Monitor.SC_MONITORPOWER, (int)Monitor.MonitorState.OFF);
-                //DllComands.LockWorkStation();
-                //DllComands.SetSuspendState(false, true, true);
+                _restAction.TakeRest();
             }
+        }
+
+        public void ShowRestTimeNotification(decimal timeRested)
+        {
+            ToastContent toastContent = new ToastContent()
+            {
+                Launch = "body tapped",
+                Visual = new ToastVisual()
+                {
+                    BindingGeneric = new ToastBindingGeneric()
+                    {
+                        Children =
+                        {
+                            new AdaptiveText()
+                            {
+                                Text = $"You rested for {timeRested.ToString("0.##")} min"
+                            }
+                        }
+                    }
+                },                
+
+            };
+
+            var doc = new XmlDocument();
+            doc.LoadXml(toastContent.GetContent());
+
+            var promptNotification = new ToastNotification(doc);            
+
+            ToastNotificationManagerCompat.CreateToastNotifier().Show(promptNotification);
         }
     }
 }

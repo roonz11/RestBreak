@@ -1,4 +1,8 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Win32;
+using RestTray.WindowsActions;
+using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Windows;
@@ -12,7 +16,26 @@ namespace RestTray
     {
         private System.Windows.Forms.NotifyIcon _notifyIcon;
         private bool _isExit;
-        private HeartBeat _heartBeat = new HeartBeat();
+        
+        private ServiceProvider serviceProvider;
+        private HeartBeat _heartBeat;
+        private SystemEventDetections _eventDetections;
+
+        public App()
+        {
+            ServiceCollection services = new ServiceCollection();
+            ConfigureServices(services);
+            serviceProvider = services.BuildServiceProvider();            
+        }
+
+        private void ConfigureServices(ServiceCollection services)
+        {
+            services.AddSingleton<HeartBeat>();
+            services.AddSingleton<RestTimer>();
+            services.AddSingleton<Notification>();
+            services.AddSingleton<RestAction>();
+            services.AddSingleton<SystemEventDetections>();
+        }
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -25,6 +48,11 @@ namespace RestTray
             _notifyIcon.Visible = true;
 
             CreateContextMenu();
+
+            _eventDetections = serviceProvider.GetService<SystemEventDetections>();
+            SystemEvents.SessionSwitch += new SessionSwitchEventHandler(_eventDetections.SystemEvents_SessionSwitch);
+            
+            _heartBeat = serviceProvider.GetService<HeartBeat>();
             StartHeartBeat();
         }
 
@@ -36,6 +64,7 @@ namespace RestTray
         private void CreateContextMenu()
         {
             _notifyIcon.ContextMenuStrip = new System.Windows.Forms.ContextMenuStrip();
+            _notifyIcon.ContextMenuStrip.Items.Add("Restart").Click += (s, e) => _heartBeat.Restart();
             _notifyIcon.ContextMenuStrip.Items.Add("Exit").Click += (s, e) => ExitApplication();
             
         }

@@ -2,8 +2,10 @@
 
 namespace RestTray
 {
+    //public delegate bool ReturnElapsedEventHandler(object sender, ElapsedEventArgs args);
     public class HeartBeat
     {
+        //public event ReturnElapsedEventHandler ReturnElapsedEvent;
         private readonly Timer _timer;
         private readonly Notification _notification;
 #if DEBUG
@@ -12,9 +14,9 @@ namespace RestTray
         private const int DURATION = 20 * 60000;
 #endif
 
-        public HeartBeat()
+        public HeartBeat(Notification notification)
         {
-            _notification = new Notification();
+            _notification = notification;
             _timer = new Timer(DURATION) { AutoReset = true };
             _timer.Elapsed += TimerElapsed;
         }
@@ -33,5 +35,13 @@ namespace RestTray
         {
             _timer.Stop();
         }
+
+        public void Restart()
+        {
+            _timer.Stop();
+            _timer.Start();
+        }
     }
+
+    
 }
