@@ -12,9 +12,9 @@ namespace RestTray
         private const int DURATION = 20 * 60000;
 #endif
 
-        public HeartBeat()
+        public HeartBeat(Notification notification)
         {
-            _notification = new Notification();
+            _notification = notification;
             _timer = new Timer(DURATION) { AutoReset = true };
             _timer.Elapsed += TimerElapsed;
         }
@@ -33,5 +33,13 @@ namespace RestTray
         {
             _timer.Stop();
         }
+
+        public void Restart()
+        {
+            _timer.Stop();
+            _timer.Start();
+        }
     }
+
+    
 }
