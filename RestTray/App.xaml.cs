@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
+using RestTray.Options;
 using RestTray.WindowsActions;
 using System;
 using System.ComponentModel;
@@ -17,24 +19,40 @@ namespace RestTray
         private System.Windows.Forms.NotifyIcon _notifyIcon;
         private bool _isExit;
         
-        private ServiceProvider serviceProvider;
+        public IServiceProvider ServiceProvider { get; private set; }
+        public  IConfiguration Configuration { get; private set; }
+        
         private HeartBeat _heartBeat;
         private SystemEventDetections _eventDetections;
 
         public App()
         {
-            ServiceCollection services = new ServiceCollection();
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appSettings.json", optional: false, reloadOnChange: true);
+
+#if DEBUG
+                builder.AddJsonFile("appSettings.Development.json", optional: true);
+#else
+            builder.AddJsonFile("appSettings.Production.json", optional: true);
+
+#endif
+            Configuration = builder.Build();
+
+            
+            var services = new ServiceCollection();
             ConfigureServices(services);
-            serviceProvider = services.BuildServiceProvider();            
+            ServiceProvider = services.BuildServiceProvider();            
         }
 
-        private void ConfigureServices(ServiceCollection services)
+        private void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<HeartBeat>();
             services.AddSingleton<RestTimer>();
             services.AddSingleton<Notification>();
             services.AddSingleton<RestAction>();
-            services.AddSingleton<SystemEventDetections>();
+            services.AddSingleton<SystemEventDetections>();            
+            services.Configure<BreakInterval>(Configuration.GetSection(nameof(BreakInterval)));
         }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -49,10 +67,10 @@ namespace RestTray
 
             CreateContextMenu();
 
-            _eventDetections = serviceProvider.GetService<SystemEventDetections>();
+            _eventDetections = ServiceProvider.GetService<SystemEventDetections>();
             SystemEvents.SessionSwitch += new SessionSwitchEventHandler(_eventDetections.SystemEvents_SessionSwitch);
             
-            _heartBeat = serviceProvider.GetService<HeartBeat>();
+            _heartBeat = ServiceProvider.GetService<HeartBeat>();
             StartHeartBeat();
         }
 
