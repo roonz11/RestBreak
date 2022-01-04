@@ -1,4 +1,6 @@
-﻿using System.Timers;
+﻿using Microsoft.Extensions.Options;
+using RestTray.Options;
+using System.Timers;
 
 namespace RestTray
 {
@@ -6,16 +8,13 @@ namespace RestTray
     {
         private readonly Timer _timer;
         private readonly Notification _notification;
-#if DEBUG
-        private const int DURATION = 10000;
-#else
-        private const int DURATION = 20 * 60000;
-#endif
+        private readonly BreakInterval _restOptions;
 
-        public HeartBeat(Notification notification)
+        public HeartBeat(Notification notification, IOptions<BreakInterval> restOptions)
         {
             _notification = notification;
-            _timer = new Timer(DURATION) { AutoReset = true };
+            _restOptions = restOptions.Value;
+            _timer = new Timer(_restOptions.DurationMilliSeconds) { AutoReset = true };            
             _timer.Elapsed += TimerElapsed;
         }
 
