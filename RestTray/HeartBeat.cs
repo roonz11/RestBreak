@@ -9,17 +9,12 @@ namespace RestTray
         private readonly Timer _timer;
         private readonly Notification _notification;
         private readonly BreakInterval _restOptions;
-//#if DEBUG
-//        private const int DURATION = 10000;
-//#else
-//        private const int DURATION = 20 * 60000;
-//#endif
 
         public HeartBeat(Notification notification, IOptions<BreakInterval> restOptions)
         {
             _notification = notification;
             _restOptions = restOptions.Value;
-            _timer = new Timer(_restOptions.DurationMilliSeconds) { AutoReset = true };
+            _timer = new Timer(_restOptions.DurationMilliSeconds) { AutoReset = true };            
             _timer.Elapsed += TimerElapsed;
         }
 

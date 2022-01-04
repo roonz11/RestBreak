@@ -34,7 +34,7 @@ namespace RestTray
 #if DEBUG
                 builder.AddJsonFile("appSettings.Development.json", optional: true);
 #else
-            builder.AddJsonFile("appSettings.Production.json", optional: true);
+                builder.AddJsonFile("appSettings.Production.json", optional: true);
 
 #endif
             Configuration = builder.Build();
