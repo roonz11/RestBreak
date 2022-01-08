@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
+using RestTray.Data;
 using RestTray.Options;
 using RestTray.WindowsActions;
 using System;
@@ -40,6 +42,7 @@ namespace RestTray
             Configuration = builder.Build();
 
             
+            
             var services = new ServiceCollection();
             ConfigureServices(services);
             ServiceProvider = services.BuildServiceProvider();            
@@ -47,6 +50,9 @@ namespace RestTray
 
         private void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<RestBreakContext>(options => 
+                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddSingleton<HeartBeat>();
             services.AddSingleton<RestTimer>();
             services.AddSingleton<Notification>();
