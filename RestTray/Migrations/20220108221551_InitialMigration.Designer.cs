@@ -9,7 +9,7 @@ using RestTray.Data;
 namespace RestTray.Migrations
 {
     [DbContext(typeof(RestBreakContext))]
-    [Migration("20220108202549_InitialMigration")]
+    [Migration("20220108221551_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

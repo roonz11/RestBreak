@@ -20,7 +20,7 @@ namespace RestTray.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=RestBreakDB.db");
+            optionsBuilder.UseSqlite("Data Source=/RestBreakDB.db");
             base.OnConfiguring(optionsBuilder);
         }
 
