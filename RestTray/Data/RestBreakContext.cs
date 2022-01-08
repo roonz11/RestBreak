@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RestTray.Models;
-using System.Reflection;
 
 namespace RestTray.Data
 {
@@ -16,10 +15,7 @@ namespace RestTray.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Filename=RestBreakDB.db", options =>
-            {
-                options.MigrationsAssembly(Assembly.GetExecutingAssembly().FullName);
-            });
+            optionsBuilder.UseSqlite("Data Source=RestBreakDB.db");
             base.OnConfiguring(optionsBuilder);
         }
 
