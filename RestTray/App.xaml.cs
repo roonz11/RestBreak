@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
 using RestTray.Data;
 using RestTray.Options;
+using RestTray.Repositories;
+using RestTray.Services;
+using RestTray.Timers;
 using RestTray.WindowsActions;
 using System;
 using System.ComponentModel;
@@ -23,7 +25,8 @@ namespace RestTray
         public IServiceProvider ServiceProvider { get; private set; }
         public IConfiguration Configuration { get; private set; }
 
-        private HeartBeat _heartBeat;
+        private IHeartBeat _heartBeat;
+        private ActiveTimer _activeTimer;
         private SystemEventDetections _eventDetections;
 
         public App()
@@ -49,14 +52,17 @@ namespace RestTray
 
         private void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<RestBreakContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<RestBreakContext>();
 
-            services.AddSingleton<HeartBeat>();
+            services.AddLogging();
+
+            services.AddSingleton<IHeartBeat, HeartBeat>();
+            services.AddSingleton<INotification, Notification>();
+            services.AddSingleton<IRestAction, RestAction>();
+            services.AddSingleton<ActiveTimer>();
             services.AddSingleton<RestTimer>();
-            services.AddSingleton<Notification>();
-            services.AddSingleton<RestAction>();
             services.AddSingleton<SystemEventDetections>();
+            services.AddScoped<ISessionRepository, SessionRepository>();
             services.Configure<BreakInterval>(Configuration.GetSection(nameof(BreakInterval)));
         }
 
@@ -73,15 +79,17 @@ namespace RestTray
             CreateContextMenu();
 
             _eventDetections = ServiceProvider.GetService<SystemEventDetections>();
-            SystemEvents.SessionSwitch += new SessionSwitchEventHandler(_eventDetections.SystemEvents_SessionSwitch);
+            SystemEvents.SessionSwitch += new SessionSwitchEventHandler(async (s, e) => await _eventDetections.SystemEvents_SessionSwitch(s, e));
 
-            _heartBeat = ServiceProvider.GetService<HeartBeat>();
+            _heartBeat = ServiceProvider.GetService<IHeartBeat>();
+            _activeTimer = ServiceProvider.GetService<ActiveTimer>();
             StartHeartBeat();
         }
 
         private void StartHeartBeat()
         {
             _heartBeat.Start();
+            _activeTimer.Start();
         }
 
         private void CreateContextMenu()

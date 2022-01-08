@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using RestTray.Data;
 using RestTray.Models;
 using System;
@@ -11,15 +12,30 @@ namespace RestTray.Repositories
     public class SessionRepository : ISessionRepository
     {
         private readonly RestBreakContext _dbContext;
+        private readonly ILogger<SessionRepository> _logger;
 
-        public SessionRepository(RestBreakContext dbContext)
+        public SessionRepository(RestBreakContext dbContext,
+            ILogger<SessionRepository> logger)
         {
             _dbContext = dbContext;
+            _logger = logger;
         }
         public async Task<int> AddSessionAsync(Session session)
         {
-            _dbContext.Add(session);
-            return await _dbContext.SaveChangesAsync();
+            try
+            {
+                _dbContext.Add(session);
+                var result = await _dbContext.SaveChangesAsync();
+                if (result <= 0)
+                    _logger.LogInformation("Failed to Add Session");
+
+                return result;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                throw;
+            }
         }
 
         public async Task<IEnumerable<Session>> GetSessionsAsync(int dateFilter = 0)

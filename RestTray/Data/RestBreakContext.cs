@@ -7,11 +7,16 @@ namespace RestTray.Data
     {
         public DbSet<Session> Session { get; set; }
 
-        public RestBreakContext(DbContextOptions<RestBreakContext> options)
-            : base(options)
+        public RestBreakContext()
         {
 
         }
+
+        //public RestBreakContext(DbContextOptions<RestBreakContext> options)
+        //    : base(options)
+        //{
+
+        //}
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
