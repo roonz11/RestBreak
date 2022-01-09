@@ -1,4 +1,5 @@
 ﻿using RestTray.Repositories;
+
 using System;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,6 +24,11 @@ namespace RestTray
             var sesssionTask = _sessionRepository.GetSessionsAsync();
             Task.WhenAll(sesssionTask);
             var sessions = sesssionTask.Result;
+
+            SessionsStackedBarChart chart = new SessionsStackedBarChart(sessions);
+            grid1.Children.Add(chart);
         }
+
+
     }
 }

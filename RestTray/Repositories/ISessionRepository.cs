@@ -8,5 +8,9 @@ namespace RestTray.Repositories
     {
         Task<int> AddSessionAsync(Session session);
         Task<IEnumerable<Session>> GetSessionsAsync(int dateFilter = 0);
+
+#if DEBUG
+        Task RemoveAll();
+#endif
     }
 }
