@@ -3,6 +3,7 @@ using RestTray.Models;
 using RestTray.Repositories;
 using RestTray.Services;
 using RestTray.Timers;
+using System;
 using System.Threading.Tasks;
 
 namespace RestTray.WindowsActions
@@ -42,6 +43,7 @@ namespace RestTray.WindowsActions
                 {
                     ActiveTime = _activeTimer.GetElapsedTime().TotalSeconds,
                     RestTime = timeRested.TotalSeconds,
+                    Date = DateTime.Now
                 };
                 var result = await _sessionRepository.AddSessionAsync(session);
                 _heartBeat.Start();
