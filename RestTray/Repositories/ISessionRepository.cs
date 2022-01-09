@@ -7,6 +7,6 @@ namespace RestTray.Repositories
     public interface ISessionRepository
     {
         Task<int> AddSessionAsync(Session session);
-        Task<IEnumerable<Session>> GetSessionsAsync(int dateFilter);
+        Task<IEnumerable<Session>> GetSessionsAsync(int dateFilter = 0);
     }
 }
