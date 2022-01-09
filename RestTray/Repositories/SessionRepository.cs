@@ -41,7 +41,7 @@ namespace RestTray.Repositories
         public async Task<IEnumerable<Session>> GetSessionsAsync(int dateFilter = 0)
         {
             return await _dbContext.Session
-                .Where(x => dateFilter > 0 ? x.Date >= DateTime.UtcNow.AddDays(-dateFilter) : true)
+                .Where(x => dateFilter > 0 ? x.Date >= DateTime.Now.AddDays(-dateFilter) : true)
                 .ToListAsync(); ;
         }
 
