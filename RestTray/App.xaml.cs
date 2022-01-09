@@ -88,8 +88,8 @@ namespace RestTray
 
         private void StartHeartBeat()
         {
-            //_heartBeat.Start();
-            //_activeTimer.Start();
+            _heartBeat.Start();
+            _activeTimer.Start();
         }
 
         //private void Cleanup()
