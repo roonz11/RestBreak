@@ -44,5 +44,14 @@ namespace RestTray.Repositories
                 .Where(x => dateFilter > 0 ? x.Date >= DateTime.UtcNow.AddDays(-dateFilter) : true)
                 .ToListAsync(); ;
         }
+
+#if DEBUG
+        public async Task RemoveAll()
+        {
+            var sessions = await _dbContext.Session.ToListAsync();
+            _dbContext.Session.RemoveRange(sessions);
+            await _dbContext.SaveChangesAsync();
+        }
+#endif
     }
 }

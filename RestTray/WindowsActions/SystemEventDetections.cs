@@ -40,8 +40,8 @@ namespace RestTray.WindowsActions
                 var timeRested = _restTimer.GetElapsedTime();
                 var session = new Session
                 {
-                    ActiveTime = _activeTimer.GetElapsedTime(),
-                    RestTime = timeRested,
+                    ActiveTime = _activeTimer.GetElapsedTime().TotalSeconds,
+                    RestTime = timeRested.TotalSeconds,
                 };
                 var result = await _sessionRepository.AddSessionAsync(session);
                 _heartBeat.Start();

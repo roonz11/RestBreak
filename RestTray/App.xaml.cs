@@ -92,11 +92,24 @@ namespace RestTray
             _activeTimer.Start();
         }
 
+        //private void Cleanup()
+        //{
+        //    var seessionRepo = ServiceProvider.GetService<ISessionRepository>();
+        //    seessionRepo.RemoveAll();
+        //}
+
         private void CreateContextMenu()
         {
             _notifyIcon.ContextMenuStrip = new System.Windows.Forms.ContextMenuStrip();
+            _notifyIcon.ContextMenuStrip.Items.Add("Stats").Click += (s, e) => ShowStats();
             _notifyIcon.ContextMenuStrip.Items.Add("Exit").Click += (s, e) => ExitApplication();
 
+        }
+
+        private void ShowStats()
+        {
+            var statsWindow = new Stats(ServiceProvider.GetService<ISessionRepository>());
+            statsWindow.Show();
         }
 
         private void ExitApplication()

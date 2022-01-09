@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RestTray.Data;
 
 namespace RestTray.Migrations
 {
     [DbContext(typeof(RestBreakContext))]
-    partial class RestBreakContextModelSnapshot : ModelSnapshot
+    [Migration("20220109010705_Session_TimeInSeconds")]
+    partial class Session_TimeInSeconds
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
