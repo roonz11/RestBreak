@@ -2,19 +2,20 @@
 using RestTray.Options;
 using System.Timers;
 
-namespace RestTray
+namespace RestTray.Services
 {
-    public class HeartBeat
+    public class HeartBeat : IHeartBeat
     {
         private readonly Timer _timer;
-        private readonly Notification _notification;
+        private readonly INotification _notification;
         private readonly BreakInterval _restOptions;
 
-        public HeartBeat(Notification notification, IOptions<BreakInterval> restOptions)
+        public HeartBeat(INotification notification,
+            IOptions<BreakInterval> restOptions)
         {
             _notification = notification;
             _restOptions = restOptions.Value;
-            _timer = new Timer(_restOptions.DurationMilliSeconds) { AutoReset = true };            
+            _timer = new Timer(_restOptions.DurationMilliSeconds) { AutoReset = true };
             _timer.Elapsed += TimerElapsed;
         }
 
@@ -40,5 +41,5 @@ namespace RestTray
         }
     }
 
-    
+
 }
