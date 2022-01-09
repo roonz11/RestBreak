@@ -20,10 +20,7 @@ namespace RestTray.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Session>(e =>
-            {
-                e.Property(s => s.Date).HasDefaultValueSql("CURRENT_TIMESTAMP");
-            });
+            modelBuilder.Entity<Session>();
 
             base.OnModelCreating(modelBuilder);
         }
