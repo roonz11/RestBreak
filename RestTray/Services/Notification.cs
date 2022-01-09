@@ -3,13 +3,13 @@ using System;
 using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
 
-namespace RestTray
+namespace RestTray.Services
 {
-    public class Notification
+    public class Notification : INotification
     {
-        private readonly RestAction _restAction;
+        private readonly IRestAction _restAction;
 
-        public Notification(RestAction restAction)
+        public Notification(IRestAction restAction)
         {
             _restAction = restAction;
         }
@@ -75,18 +75,18 @@ namespace RestTray
                         {
                             new AdaptiveText()
                             {
-                                Text = $"You rested for: {timeRested.ToString(@"hh\:mm\:ss")}",                                
+                                Text = $"You rested for: {timeRested.ToString(@"hh\:mm\:ss")}",
                             }
                         }
                     }
-                },                
+                },
 
             };
 
             var doc = new XmlDocument();
             doc.LoadXml(toastContent.GetContent());
 
-            var promptNotification = new ToastNotification(doc);            
+            var promptNotification = new ToastNotification(doc);
 
             ToastNotificationManagerCompat.CreateToastNotifier().Show(promptNotification);
         }

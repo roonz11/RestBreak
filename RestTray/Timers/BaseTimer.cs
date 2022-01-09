@@ -1,20 +1,19 @@
-﻿
-using System;
+﻿using System;
 using System.Diagnostics;
 
-namespace RestTray
+namespace RestTray.Timers
 {
-    public class RestTimer
+    public abstract class BaseTimer
     {
         private readonly Stopwatch _timer;
-        public RestTimer()
+        public BaseTimer()
         {
             _timer = new Stopwatch();
         }
 
         public void Start()
         {
-            _timer.Restart();            
+            _timer.Restart();
         }
         public void Stop()
         {
