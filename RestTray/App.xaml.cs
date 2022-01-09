@@ -63,6 +63,8 @@ namespace RestTray
             services.AddSingleton<RestTimer>();
             services.AddSingleton<SystemEventDetections>();
             services.AddScoped<ISessionRepository, SessionRepository>();
+            services.AddSingleton<Stats>();
+            services.AddSingleton<SessionsStackedBarChart>();
             services.Configure<BreakInterval>(Configuration.GetSection(nameof(BreakInterval)));
         }
 
@@ -83,7 +85,7 @@ namespace RestTray
 
             _heartBeat = ServiceProvider.GetService<IHeartBeat>();
             _activeTimer = ServiceProvider.GetService<ActiveTimer>();
-            StartHeartBeat();
+            //StartHeartBeat();
         }
 
         private void StartHeartBeat()
@@ -108,7 +110,8 @@ namespace RestTray
 
         private void ShowStats()
         {
-            var statsWindow = new Stats(ServiceProvider.GetService<ISessionRepository>());
+            var statsWindow = new Stats(ServiceProvider.GetService<SessionsStackedBarChart>());
+            //var statsWindow = ServiceProvider.GetService<Stats>();
             statsWindow.Show();
         }
 

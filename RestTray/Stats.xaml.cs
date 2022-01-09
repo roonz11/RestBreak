@@ -1,8 +1,4 @@
-﻿using RestTray.Repositories;
-
-using System;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 
 namespace RestTray
 {
@@ -11,24 +7,13 @@ namespace RestTray
     /// </summary>
     public partial class Stats : Window
     {
-        private readonly ISessionRepository _sessionRepository;
+        private readonly SessionsStackedBarChart _sessionsStackedBarChart;
 
-        public Stats(ISessionRepository sessionRepository)
+        public Stats(SessionsStackedBarChart sessionsStackedBarChart)
         {
             InitializeComponent();
-            _sessionRepository = sessionRepository;
+            _sessionsStackedBarChart = sessionsStackedBarChart;
+            grid1.Children.Add(_sessionsStackedBarChart);
         }
-
-        protected override void OnActivated(EventArgs e)
-        {
-            var sesssionTask = _sessionRepository.GetSessionsAsync();
-            Task.WhenAll(sesssionTask);
-            var sessions = sesssionTask.Result;
-
-            SessionsStackedBarChart chart = new SessionsStackedBarChart(sessions);
-            grid1.Children.Add(chart);
-        }
-
-
     }
 }
