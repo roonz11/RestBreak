@@ -38,10 +38,10 @@ namespace RestTray.Repositories
             }
         }
 
-        public async Task<IEnumerable<Session>> GetSessionsAsync(int dateFilter = 0)
+        public async Task<IList<Session>> GetSessionsAsync(int dateFilter = -1)
         {
             return await _dbContext.Session
-                .Where(x => dateFilter > 0 ? x.Date >= DateTime.Now.AddDays(-dateFilter) : true)
+                .Where(x => dateFilter >= 0 ? x.Date.Date >= DateTime.Now.Date.AddDays(-dateFilter) : true)
                 .ToListAsync(); ;
         }
 
