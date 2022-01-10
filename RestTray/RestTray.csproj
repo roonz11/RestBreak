@@ -10,10 +10,14 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\MyIcon.ico" />
+	  <None Remove="RestBreakDB.db" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Content Include="Resources\icon.ico" />
+	  <Content Include="RestBreakDB.db">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -55,9 +59,6 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="appSettings.Production.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="RestBreakDB.db">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>

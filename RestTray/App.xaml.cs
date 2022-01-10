@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
 using RestTray.Data;
@@ -38,7 +39,7 @@ namespace RestTray
 #if DEBUG
             builder.AddJsonFile("appSettings.Development.json", optional: true);
 #else
-                builder.AddJsonFile("appSettings.Production.json", optional: true);
+            builder.AddJsonFile("appSettings.Production.json", optional: true);
 
 #endif
             Configuration = builder.Build();
@@ -52,7 +53,10 @@ namespace RestTray
 
         private void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<RestBreakContext>();
+            services.AddDbContext<RestBreakContext>(options =>
+           {
+               options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
+           });
 
             services.AddLogging();
 
