@@ -22,7 +22,7 @@ namespace RestTray
         private readonly ISessionRepository _sessionRepository;
         private readonly BreakInterval _restOptions;
         private readonly ActiveTimer _activeTimer;
-        private IEnumerable<Session> _sessions;
+        private IList<Session> _sessions;
 
         public SeriesCollection SeriesCollection { get; set; }
         public string[] Labels { get; set; }
@@ -34,7 +34,7 @@ namespace RestTray
         public string AvgActive { get; set; }
         public string AvgResting { get; set; }
 
-        public int daysFilter = 0;
+        public int daysFilter = -1;
         public string NextBreak { get; set; }
         public SessionsStackedBarChart(ISessionRepository sessionRepository,
             IOptions<BreakInterval> restOptions,
@@ -93,8 +93,8 @@ namespace RestTray
 
             Labels = _sessions.Select(x => x.Date.ToString("HH:mm")).ToArray();
 
-            AvgActive = TimeSpan.FromSeconds(Math.Round(_sessions.Average(x => x.ActiveTime), 2)).ToString(TIMEFORMAT);
-            AvgResting = TimeSpan.FromSeconds(Math.Round(_sessions.Average(x => x.RestTime), 2)).ToString(TIMEFORMAT);
+            AvgActive = TimeSpan.FromSeconds(Math.Round(_sessions.Count > 0 ? _sessions.Average(x => x.ActiveTime) : 0, 2)).ToString(TIMEFORMAT);
+            AvgResting = TimeSpan.FromSeconds(Math.Round(_sessions.Count > 0 ? _sessions.Average(x => x.RestTime) : 0, 2)).ToString(TIMEFORMAT);
 
             LabelFormatter = value => Math.Round(TimeSpan.FromSeconds(value).TotalMinutes, 2).ToString();
 
@@ -107,7 +107,7 @@ namespace RestTray
             switch (textblock?.Text)
             {
                 case DateFilters.Today:
-                    daysFilter = 1;
+                    daysFilter = 0;
                     break;
                 case DateFilters.Last7:
                     daysFilter = 7;

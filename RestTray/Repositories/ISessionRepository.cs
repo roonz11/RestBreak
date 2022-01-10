@@ -7,7 +7,7 @@ namespace RestTray.Repositories
     public interface ISessionRepository
     {
         Task<int> AddSessionAsync(Session session);
-        Task<IEnumerable<Session>> GetSessionsAsync(int dateFilter = 0);
+        Task<IList<Session>> GetSessionsAsync(int dateFilter = -1);
 
 #if DEBUG
         Task RemoveAll();
