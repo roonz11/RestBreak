@@ -136,6 +136,7 @@ namespace RestTray
             CreateChart();
             CalculateNextBreak();
         }
+
     }
 
     public static class DateFilters

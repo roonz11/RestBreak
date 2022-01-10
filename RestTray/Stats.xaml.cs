@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 
 namespace RestTray
 {
@@ -12,8 +13,14 @@ namespace RestTray
         public Stats(SessionsStackedBarChart sessionsStackedBarChart)
         {
             InitializeComponent();
+            Closing += StatsClosing;
             _sessionsStackedBarChart = sessionsStackedBarChart;
             grid1.Children.Add(_sessionsStackedBarChart);
+        }
+
+        private void StatsClosing(object sender, CancelEventArgs e)
+        {
+            grid1.Children.RemoveAt(0);
         }
     }
 }

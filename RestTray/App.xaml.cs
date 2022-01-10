@@ -68,7 +68,7 @@ namespace RestTray
             services.AddSingleton<SystemEventDetections>();
             services.AddScoped<ISessionRepository, SessionRepository>();
             services.AddSingleton<Stats>();
-            services.AddSingleton<SessionsStackedBarChart>();
+            services.AddScoped<SessionsStackedBarChart>();
             services.Configure<BreakInterval>(Configuration.GetSection(nameof(BreakInterval)));
         }
 
@@ -114,7 +114,8 @@ namespace RestTray
 
         private void ShowStats()
         {
-            var statsWindow = new Stats(ServiceProvider.GetService<SessionsStackedBarChart>());
+            //var statsWindow = new Stats(ServiceProvider.GetService<SessionsStackedBarChart>());
+            var statsWindow = ServiceProvider.GetService<Stats>();
             statsWindow.Show();
         }
 
