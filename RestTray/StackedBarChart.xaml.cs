@@ -93,8 +93,8 @@ namespace RestTray
 
             Labels = _sessions.Select(x => x.Date.ToString("HH:mm")).ToArray();
 
-            AvgActive = TimeSpan.FromSeconds(Math.Round(_sessions.Average(x => x.ActiveTime), 2)).ToString(TIMEFORMAT);
-            AvgResting = TimeSpan.FromSeconds(Math.Round(_sessions.Average(x => x.RestTime), 2)).ToString(TIMEFORMAT);
+            AvgActive = TimeSpan.FromSeconds(Math.Round(_sessions.Count > 0 ? _sessions.Average(x => x.ActiveTime) : 0, 2)).ToString(TIMEFORMAT);
+            AvgResting = TimeSpan.FromSeconds(Math.Round(_sessions.Count > 0 ? _sessions.Average(x => x.RestTime) : 0, 2)).ToString(TIMEFORMAT);
 
             LabelFormatter = value => Math.Round(TimeSpan.FromSeconds(value).TotalMinutes, 2).ToString();
 
