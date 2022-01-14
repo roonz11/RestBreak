@@ -38,6 +38,7 @@ namespace RestTray.WindowsActions
             }
             else if (e.Reason == SessionSwitchReason.SessionUnlock)
             {
+                _restTimer.Stop();
                 var timeRested = _restTimer.GetElapsedTime();
                 var session = new Session
                 {
@@ -47,7 +48,6 @@ namespace RestTray.WindowsActions
                 };
                 var result = await _sessionRepository.AddSessionAsync(session);
                 _heartBeat.Start();
-                _restTimer.Stop();
                 _activeTimer.Start();
                 _notification.ShowRestTimeNotification(timeRested);
             }

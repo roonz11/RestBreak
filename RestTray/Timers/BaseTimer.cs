@@ -1,28 +1,24 @@
 ﻿using System;
-using System.Diagnostics;
 
 namespace RestTray.Timers
 {
     public abstract class BaseTimer
     {
-        private readonly Stopwatch _timer;
-        public BaseTimer()
-        {
-            _timer = new Stopwatch();
-        }
+        public DateTime StartTime;
+        public DateTime EndTime;
 
         public void Start()
         {
-            _timer.Restart();
+            StartTime = DateTime.Now;
         }
         public void Stop()
         {
-            _timer.Stop();
+            EndTime = DateTime.Now;
         }
 
         public TimeSpan GetElapsedTime()
         {
-            return TimeSpan.FromMilliseconds(_timer.ElapsedMilliseconds);
+            return EndTime - StartTime;
         }
     }
 }
