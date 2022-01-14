@@ -16,7 +16,7 @@
 	<ItemGroup>
 	  <Content Include="Resources\icon.ico" />
 	  <Content Include="RestBreakDB.db">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </Content>
 	</ItemGroup>
 
